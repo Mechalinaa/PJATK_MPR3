@@ -4,8 +4,7 @@ import lombok.*;
 
 @Getter
 @ToString
-@EqualsAndHashCode
-@AllArgsConstructor
+@EqualsAndHashCode(of = "email")
 public class Employee {
     private String name;
     private String surname;
@@ -13,7 +12,15 @@ public class Employee {
     private String companyName;
     private Position position;
     private int salary;
-//    Validation validator = new Validation();
+
+    public Employee(String name, String surname, String email, String companyName, Position position) {
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.companyName = companyName;
+        this.position = position;
+        salary = position.getSalary();
+    }
 
     public void setName(String name) {
         if (!Validation.isStringValid(name)) {

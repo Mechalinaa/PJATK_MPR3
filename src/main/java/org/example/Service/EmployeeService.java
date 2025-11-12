@@ -25,25 +25,27 @@ public class EmployeeService {
         }
     }
 
-    public void searchByCompanyName(String companyName) {
+    public ArrayList<Employee> searchByCompanyName(String companyName) {
+        ArrayList<Employee> companyNameList = new ArrayList<>();
         for (Employee emp : employeeList) {
             if (emp.getCompanyName().equals(companyName)) {
-                System.out.println(emp.getName() + " " + emp.getSurname() + "\n");
+                companyNameList.add(emp);
             }
         }
+        return companyNameList;
     }
 
-    public void sortInAlphabeticalOrder() {
-        Comparator<Employee> surnameComparator = new Comparator<>() {
+
+    public ArrayList<Employee> sortEmployeesBySurname() {
+        ArrayList<Employee> sortedList = new ArrayList<>(employeeList);
+        Comparator<Employee> surnameComparator = new Comparator<Employee>() {
             @Override
             public int compare(Employee emp1, Employee emp2) {
                 return emp1.getSurname().compareToIgnoreCase(emp2.getSurname());
             }
         };
-        employeeList.sort(surnameComparator);
-        for (Employee emp : employeeList) {
-            System.out.println(emp.getName() + " " + emp.getSurname() + "\n");
-        }
+        sortedList.sort(surnameComparator);
+        return sortedList;
     }
 
     public HashMap<Position, ArrayList<Employee>> groupByPosition() {
@@ -74,20 +76,24 @@ public class EmployeeService {
     }
 
     public double salaryStatistic() {
+        if (employeeList.isEmpty()) {
+            return 0;
+        }
+
         double allSalaries = 0;
-        double numberOfEmployees = 0;
         for (Employee emp : employeeList) {
             allSalaries += emp.getSalary();
-            numberOfEmployees += 1;
         }
-        return allSalaries / numberOfEmployees; //zwracamy srednia wynagrodzen
+
+        return allSalaries / employeeList.size();
     }
+
 
     public Employee bestPaid() {
         if (employeeList.isEmpty()) {
             return null;
         }
-        Employee bestPaid = employeeList.getFirst(); //.get(0) - przypisujemy pierwszy element z listy pracownikow
+        Employee bestPaid = employeeList.get(0);
         for (Employee emp : employeeList) {
             if (bestPaid.getSalary() < emp.getSalary()) {
                 bestPaid = emp;
