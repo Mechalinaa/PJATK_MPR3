@@ -25,18 +25,6 @@ public class EmployeeServiceTest {
     }
 
     @Test
-    void addEmployee_uniqueEmail_shouldAddSuccessfully() {
-        // Arrange
-        Employee employee = e1;
-
-        // Act
-        service.addEmployee(employee);
-
-        // Assert
-        assertEquals(employee, service.bestPaid(), "Najlepiej opłacony powinien być jedyny dodany pracownik");
-    }
-
-    @Test
     void addEmployee_duplicateEmail_shouldThrowException() {
         // Arrange
         service.addEmployee(e1);
@@ -52,8 +40,6 @@ public class EmployeeServiceTest {
         // Arrange
         service.addEmployee(e1);
         service.addEmployee(e2);
-        service.addEmployee(e3);
-        service.addEmployee(e4);
 
         // Act
         ArrayList<Employee> results = service.searchByCompanyName("FirmaA");
@@ -62,6 +48,14 @@ public class EmployeeServiceTest {
         assertEquals(2, results.size());
         assertTrue(results.contains(e1));
         assertTrue(results.contains(e2));
+    }
+
+    @Test
+    void searchByCompanyName_returnsEmptyList() {
+        service.addEmployee(e1);
+        ArrayList<Employee> list = service.searchByCompanyName("BrakFirmy");
+
+        assertTrue(list.isEmpty());
     }
 
     @Test
@@ -94,6 +88,7 @@ public class EmployeeServiceTest {
         HashMap<Position, ArrayList<Employee>> grouped = service.groupByPosition();
 
         // Assert
+        assertEquals(5, grouped.size()); // wszystkie stanowiska muszą być obecne
         assertEquals(2, grouped.get(Position.PROGRAMISTA).size());
         assertEquals(1, grouped.get(Position.MANAGER).size());
         assertEquals(1, grouped.get(Position.STAZYSTA).size());

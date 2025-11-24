@@ -20,15 +20,10 @@ public class EmployeeTest {
 
     @Test
     void equalsAndHashCode_basedOnEmail() {
-        // Arrange
-        Employee e1 = emp1;
-        Employee e2 = emp2;
-        Employee e3 = emp3;
-
         // Act & Assert
-        assertEquals(e1, e2, "Dwa obiekty z tym samym emailem powinny być równe (equals)");
-        assertEquals(e1.hashCode(), e2.hashCode(), "hashCode powinien być zgodny dla tych obiektów");
-        assertNotEquals(e1, e3, "Różne emaile -> różne obiekty");
+        assertEquals(emp1, emp2, "Dwa obiekty z tym samym emailem powinny być równe (equals)");
+        assertEquals(emp1.hashCode(), emp2.hashCode(), "hashCode powinien być zgodny dla tych obiektów");
+        assertNotEquals(emp1, emp3, "Różne emaile to różne obiekty");
     }
 
     @Test
@@ -44,7 +39,22 @@ public class EmployeeTest {
     }
 
     @Test
-    void setters_validation_shouldThrowOnInvalidInputs() {
+        //czy wszystkie settery dzialaja
+    void setters_acceptValidValues() {
+        Employee e = new Employee("A", "B", "a@b.pl", "Firma", Position.MANAGER);
+
+        assertAll(
+                () -> e.setName("Marek"),
+                () -> e.setSurname("Lewandowski"),
+                () -> e.setEmail("nowy@mail.com"),
+                () -> e.setCompanyName("NowaFirma"),
+                () -> e.setPosition(Position.PROGRAMISTA),
+                () -> e.setSalary(9999)
+        );
+    }
+
+    @Test
+    void setters_shouldThrowOnInvalidInputs() {
         // Arrange
         Employee e = new Employee("Adam", "Kowal", "adam@f.pl", "FirmaZ", Position.PROGRAMISTA);
 
